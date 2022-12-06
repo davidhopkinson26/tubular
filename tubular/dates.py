@@ -192,6 +192,10 @@ class DateDifferenceTransformer(BaseTransformer):
     copy : bool, default = True
         Should X be copied prior to transform?
     verbose: bool, default = False
+    lower_col_ops: str, default = "None"
+        Takes min, max or mode of the lower_column. Sets a lower_column value for all calculations.
+    upper_col_ops: str, default = "None"
+        Takes min, max or mean of the upper_column. Sets a upper_column value for all calculations.
     """
 
     def __init__(
@@ -202,6 +206,8 @@ class DateDifferenceTransformer(BaseTransformer):
         units="D",
         copy=True,
         verbose=False,
+        lower_col_ops=None,
+        upper_col_ops=None,
     ):
 
         if not type(column_lower) is str:
@@ -223,6 +229,8 @@ class DateDifferenceTransformer(BaseTransformer):
             "s",
         ]
 
+        accepted_values_func = ["min", "max", "mean", None]
+
         if not type(units) is str:
 
             raise TypeError("units must be a str")
@@ -231,6 +239,18 @@ class DateDifferenceTransformer(BaseTransformer):
 
             raise ValueError(
                 f"units must be one of {accepted_values_units}, got {units}"
+            )
+
+        if lower_col_ops not in accepted_values_func:
+
+            raise ValueError(
+                f"{self.classname()}: lower column function must be one of {accepted_values_func}, got {lower_col_ops}"
+            )
+
+        if upper_col_ops not in accepted_values_func:
+
+            raise ValueError(
+                f"{self.classname()}: lower column function must be one of {accepted_values_func}, got {upper_col_ops}"
             )
 
         self.units = units
@@ -249,6 +269,9 @@ class DateDifferenceTransformer(BaseTransformer):
 
         super().__init__(columns=columns, copy=copy, verbose=verbose)
 
+        self.lower_col_ops = lower_col_ops
+        self.upper_col_ops = upper_col_ops
+
         # This attribute is not for use in any method, use 'columns' instead.
         # Here only as a fix to allow string representation of transformer.
         self.column_lower = column_lower
@@ -266,9 +289,25 @@ class DateDifferenceTransformer(BaseTransformer):
 
         X = super().transform(X)
 
-        X[self.new_column_name] = (
-            X[self.columns[1]] - X[self.columns[0]]
-        ) / np.timedelta64(1, self.units)
+        if self.lower_col_ops == "min":
+            min_date = X[self.column_lower].min()
+        elif self.lower_col_ops == "max":
+            min_date = X[self.column_lower].max()
+        elif self.lower_col_ops == "mean":
+            min_date = X[self.column_lower].mean()
+        else:
+            min_date = X[self.columns[0]]
+
+        if self.upper_col_ops == "min":
+            max_date = X[self.column_upper].min()
+        elif self.upper_col_ops == "max":
+            max_date = X[self.column_upper].max()
+        elif self.upper_col_ops == "mean":
+            max_date = X[self.column_upper].mean()
+        else:
+            max_date = X[self.columns[1]]
+
+        X[self.new_column_name] = (max_date - min_date) / np.timedelta64(1, self.units)
 
         return X
 

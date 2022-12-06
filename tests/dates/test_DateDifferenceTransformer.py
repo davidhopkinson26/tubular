@@ -25,8 +25,10 @@ class TestInit(object):
                 "units",
                 "copy",
                 "verbose",
+                "lower_col_ops",
+                "upper_col_ops",
             ],
-            expected_default_values=(None, "D", True, False),
+            expected_default_values=(None, "D", True, False, None, None),
         )
 
     def test_class_methods(self):
@@ -99,6 +101,8 @@ class TestInit(object):
                 units="Y",
                 copy=True,
                 verbose=False,
+                lower_col_ops=None,
+                upper_col_ops=None,
             )
 
     def test_new_column_name_type_error(self):
@@ -113,6 +117,8 @@ class TestInit(object):
                 units="Y",
                 copy=True,
                 verbose=False,
+                lower_col_ops=None,
+                upper_col_ops=None,
             )
 
     def test_units_type_error(self):
@@ -127,6 +133,8 @@ class TestInit(object):
                 units=123,
                 copy=True,
                 verbose=False,
+                lower_col_ops=None,
+                upper_col_ops=None,
             )
 
     def test_units_values_error(self):
@@ -456,6 +464,127 @@ class TestTransform(object):
 
         return df
 
+    def expected_df_8(self):
+
+        """Expected output for test_expected_low_col_func_min."""
+
+        df = pd.DataFrame(
+            {
+                "a": [
+                    datetime.datetime(1993, 9, 27, 11, 58, 58),
+                    datetime.datetime(2000, 3, 19, 12, 59, 59),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 10, 59, 59),
+                    datetime.datetime(2018, 12, 10, 11, 59, 59),
+                    datetime.datetime(1985, 7, 23, 11, 59, 59),
+                ],
+                "b": [
+                    datetime.datetime(2020, 5, 1, 12, 59, 59),
+                    datetime.datetime(2019, 12, 25, 11, 58, 58),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 9, 10, 9, 59, 59),
+                    datetime.datetime(2015, 11, 10, 11, 59, 59),
+                    datetime.datetime(2015, 11, 10, 12, 59, 59),
+                    datetime.datetime(2015, 7, 23, 11, 59, 59),
+                ],
+                "x": [
+                    34.774157,
+                    34.423705,
+                    33.301163,
+                    33.301163,
+                    33.134151,
+                    30.300417,
+                    30.300417,
+                    29.999247,
+                ],
+            }
+        )
+        return df
+
+    def expected_df_9(self):
+
+        """Expected output for test_expected_up_col_func_max."""
+
+        df = pd.DataFrame(
+            {
+                "a": [
+                    datetime.datetime(1993, 9, 27, 11, 58, 58),
+                    datetime.datetime(2000, 3, 19, 12, 59, 59),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 10, 59, 59),
+                    datetime.datetime(2018, 12, 10, 11, 59, 59),
+                    datetime.datetime(1985, 7, 23, 11, 59, 59),
+                ],
+                "b": [
+                    datetime.datetime(2020, 5, 1, 12, 59, 59),
+                    datetime.datetime(2019, 12, 25, 11, 58, 58),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 9, 10, 9, 59, 59),
+                    datetime.datetime(2015, 11, 10, 11, 59, 59),
+                    datetime.datetime(2015, 11, 10, 12, 59, 59),
+                    datetime.datetime(2015, 7, 23, 11, 59, 59),
+                ],
+                "y": [
+                    26.593407,
+                    20.118141,
+                    1.473108,
+                    1.557983,
+                    1.557983,
+                    1.558097,
+                    1.390971,
+                    34.774271,
+                ],
+            }
+        )
+        return df
+
+    def expected_df_10(self):
+
+        """Expected output for test_expected_low_col_func_mean."""
+
+        df = pd.DataFrame(
+            {
+                "a": [
+                    datetime.datetime(1993, 9, 27, 11, 58, 58),
+                    datetime.datetime(2000, 3, 19, 12, 59, 59),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 11, 59, 59),
+                    datetime.datetime(2018, 10, 10, 10, 59, 59),
+                    datetime.datetime(2018, 12, 10, 11, 59, 59),
+                    datetime.datetime(1985, 7, 23, 11, 59, 59),
+                ],
+                "b": [
+                    datetime.datetime(2020, 5, 1, 12, 59, 59),
+                    datetime.datetime(2019, 12, 25, 11, 58, 58),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 11, 10, 11, 59, 59),
+                    datetime.datetime(2018, 9, 10, 9, 59, 59),
+                    datetime.datetime(2015, 11, 10, 11, 59, 59),
+                    datetime.datetime(2015, 11, 10, 12, 59, 59),
+                    datetime.datetime(2015, 7, 23, 11, 59, 59),
+                ],
+                "z": [
+                    11.127995,
+                    11.127995,
+                    11.127995,
+                    11.127995,
+                    11.127995,
+                    11.127995,
+                    11.127995,
+                    11.127995,
+                ],
+            }
+        )
+
+        return df
+
     def test_arguments(self):
         """Test that transform has expected arguments."""
 
@@ -475,6 +604,8 @@ class TestTransform(object):
             units="Y",
             copy=True,
             verbose=False,
+            lower_col_ops=None,
+            upper_col_ops=None,
         )
 
         expected_call_args = {0: {"args": (d.create_datediff_test_df(),), "kwargs": {}}}
@@ -693,4 +824,79 @@ class TestTransform(object):
             actual=df_transformed,
             expected=expected,
             msg_tag="Unexpected values in DateDifferenceTransformer.transform (nulls)",
+        )
+
+    def test_expected_low_col_func_min(self):
+        """Test that the output is expected from transform, when low_col_func is min."""
+
+        df = d.create_datediff_test_df()
+        expected = self.expected_df_8()
+
+        x = DateDifferenceTransformer(
+            column_lower="a",
+            column_upper="b",
+            new_column_name="x",
+            units="Y",
+            copy=True,
+            verbose=False,
+            lower_col_ops="min",
+            upper_col_ops=None,
+        )
+
+        df_transformed = x.transform(df)
+
+        ta.equality.assert_frame_equal_msg(
+            actual=df_transformed,
+            expected=expected,
+            msg_tag="Unexpected values in DateDifferenceTransformer.transform low_col_func=min",
+        )
+
+    def test_expected_up_col_func_max(self):
+        """Test that the output is expected from transform, when up_col_func is max."""
+
+        df = d.create_datediff_test_df()
+        expected = self.expected_df_9()
+
+        x = DateDifferenceTransformer(
+            column_lower="a",
+            column_upper="b",
+            new_column_name="y",
+            units="Y",
+            copy=True,
+            verbose=False,
+            lower_col_ops=None,
+            upper_col_ops="max",
+        )
+
+        df_transformed = x.transform(df)
+
+        ta.equality.assert_frame_equal_msg(
+            actual=df_transformed,
+            expected=expected,
+            msg_tag="Unexpected values in DateDifferenceTransformer.transform up_col_func=max.",
+        )
+
+    def test_expected_low_col_func_mean(self):
+        """Test that the output is expected from transform, when columns are mean and max."""
+
+        df = d.create_datediff_test_df()
+        expected = self.expected_df_10()
+
+        x = DateDifferenceTransformer(
+            column_lower="a",
+            column_upper="b",
+            new_column_name="z",
+            units="Y",
+            copy=True,
+            verbose=False,
+            lower_col_ops="mean",
+            upper_col_ops="max",
+        )
+
+        df_transformed = x.transform(df)
+
+        ta.equality.assert_frame_equal_msg(
+            actual=df_transformed,
+            expected=expected,
+            msg_tag="Unexpected values in DateDifferenceTransformer.transform (mean and max)",
         )
